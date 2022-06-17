@@ -3,7 +3,10 @@ FROM node:latest as build-stage
 ENV NODE_OPTIONS=--openssl-legacy-provider
 WORKDIR /tabix
 COPY . .
-RUN echo 'nodeLinker: node-modules' > .yarnrc.yml && yarn install && yarn build
+RUN yarn config set registry https://registry.npm.taobao.org --global
+RUN yarn config set disturl https://npm.taobao.org/dist --global
+RUN echo 'nodeLinker: node-modules' > .yarnrc.yml 
+RUN yarn install && yarn build
 
 # production stage
 FROM nginx:stable-alpine as production-stage
